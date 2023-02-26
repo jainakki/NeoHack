@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
+import static com.project.stressAI.configuration.Constants.*;
+
 @Service
 public class SentimentAnalyzer {
 
@@ -47,10 +49,10 @@ public class SentimentAnalyzer {
         String mainSentiment = "";
         for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-            if (sentiment.equals("Positive") || sentiment.equals("Negative")) {
+            if (sentiment.equals(POSITIVE) || sentiment.equals(NEGATIVE)) {
                 mainSentiment = sentiment;
                 break;
-            } else if (sentiment.equals("Neutral") && mainSentiment.isEmpty()) {
+            } else if (sentiment.equals(NEUTRAL) && mainSentiment.isEmpty()) {
                 mainSentiment = sentiment;
             }
         }
