@@ -6,8 +6,11 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
+import org.springframework.stereotype.Service;
+
 import java.util.Properties;
 
+@Service
 public class SentimentAnalyzer {
 
     private static final StanfordCoreNLP pipeline;
