@@ -52,7 +52,6 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
-
 		<!-- Include TensorFlow (pure CPU only) for all supported platforms -->
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>

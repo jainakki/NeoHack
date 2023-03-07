@@ -46,7 +46,6 @@ public class StressDetectorServiceImpl {
 			}
 
 			System.out.println(stressList);
-
 			for (Double d : stressList) {
 				if (d >= 20000) {
 					System.out.println("High Stress");
