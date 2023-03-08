@@ -3,6 +3,7 @@ package com.project.stressAI.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -28,6 +29,7 @@ import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.io.ClassPathResource;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
+import org.nd4j.shade.jackson.databind.ObjectMapper;
 
 public class StressDetectorServiceImpl {
 
@@ -91,6 +93,11 @@ public class StressDetectorServiceImpl {
 			}
 			System.out.println(evaluation.stats());
 
+			ObjectMapper objectMapper = new ObjectMapper();
+			String evaluationJson = objectMapper.writeValueAsString(evaluation);
+			
+			System.out.println(evaluationJson);
+			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
