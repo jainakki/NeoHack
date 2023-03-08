@@ -3,7 +3,6 @@ package com.project.stressAI.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -30,13 +29,20 @@ import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.io.ClassPathResource;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import org.nd4j.shade.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
-public class StressDetectorServiceImpl {
 
-	public static void main(String[] args) {
+@Service
+public class StressDetectorServiceImpl implements StressDetectorService {
+
+//	public static void main(String[] args) {
+		
+	@Override
+	public String getStress() {
 		try {
 			DataSet dataSet = loadHeartRateData();
 			double Stress = 0;
+			String evaluationJson;
 
 			List<Double> stressList = new ArrayList<>();
 			for (int i = 0; i <= dataSet.numExamples() - 1; i++) {
@@ -94,14 +100,19 @@ public class StressDetectorServiceImpl {
 			System.out.println(evaluation.stats());
 
 			ObjectMapper objectMapper = new ObjectMapper();
-			String evaluationJson = objectMapper.writeValueAsString(evaluation);
+			evaluationJson = objectMapper.writeValueAsString(evaluation);
 			
 			System.out.println(evaluationJson);
+			return evaluationJson;
 			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		return null;
+		
 	}
+		
+//	}
 
 	public static double calculateStress(double heartRate, double hrv, double heartRateWeight, double hrvWeight) {
 		// Calculate stress
@@ -132,4 +143,6 @@ public class StressDetectorServiceImpl {
 		return dataSet;
 
 	}
+
+	
 }
