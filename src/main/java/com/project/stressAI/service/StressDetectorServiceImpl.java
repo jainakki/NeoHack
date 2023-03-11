@@ -9,8 +9,11 @@ import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
 import org.datavec.api.writable.Writable;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-import org.deeplearning4j.datasets.iterator.impl.ListDataSetIterator;
+//import org.deeplearning4j.datasets.iterator.impl.ListDataSetIterator;
+//import org.deeplearning4j.eval.;
+import org.deeplearning4j.datasets.iterator.utilty.ListDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
+import org.deeplearning4j.eval.RegressionEvaluation;
 import org.deeplearning4j.nn.conf.BackpropType;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -72,38 +75,36 @@ public class StressDetectorServiceImpl implements StressDetectorService {
 
 			DataSetIterator dataSetIterator = new ListDataSetIterator(dataSet.asList());
 			// Define the model
-			MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder().iterations(1000)
-					.activation(Activation.TANH).weightInit(WeightInit.XAVIER).regularization(true).learningRate(0.1)
-					.l2(0.0001).list().layer(0, new DenseLayer.Builder().nIn(4).nOut(3).build())
-					.layer(1, new DenseLayer.Builder().nIn(3).nOut(3).build())
+			MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
+					.weightInit(WeightInit.XAVIER)
+					.list()
+					.layer(1, new DenseLayer.Builder().nIn(2).nOut(10).build())
 					.layer(2,
 							new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-									.activation(Activation.SOFTMAX).nIn(3).nOut(3).build())
-					.backpropType(BackpropType.Standard).pretrain(false).build();
+									.activation(Activation.SOFTMAX).nIn(10).nOut(2).build())
+					.build();
 
 			MultiLayerNetwork model = new MultiLayerNetwork(configuration);
 			model.init();
-//	        model.fit(dataSetIterator);
-//	        INDArray output = model.output(dataSet.getFeatures());
-			Evaluation evaluation = new Evaluation(5);
+
 			while (dataSetIterator.hasNext()) {
 				DataSet testDataSet = dataSetIterator.next();
-				INDArray features = testDataSet.getFeatures();
-//	            INDArray labels = testDataSet.getFeatures();
-				INDArray labels = Nd4j.create(new double[][] { { 0.40, 0.33, 0.27 }, { 0.24, 0.38, 0.37 },
-						{ 0.28, 0.34, 0.39 }, { 0.42, 0.32, 0.26 }, { 0.37, 0.27, 0.37 } });
-				INDArray predicted = model.output(features, false);
-				System.out.println(labels);
-				System.out.println(predicted);
-				evaluation.eval(labels, predicted);
+				model.f1Score(testData);
+//				evaluation.falseNegativeRate(labels, predicted);
 			}
-			System.out.println(evaluation.stats());
+			INDArray input = Nd4j.create(new double[][]{{10}, {20}, {30}});
+			INDArray output = model.output(input);
+			INDArray labels = Nd4j.create(new double[][] { { 126,80 }, { 135, 99}});
+			INDArray predicted = model.output(labels, false);
+			System.out.println(labels);
+			System.out.println(predicted);
+//			System.out.println(evaluation.stats());
 
-			ObjectMapper objectMapper = new ObjectMapper();
-			evaluationJson = objectMapper.writeValueAsString(evaluation);
-			
-			System.out.println(evaluationJson);
-			return evaluationJson;
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			evaluationJson = objectMapper.writeValueAsString(evaluation);
+//
+//			System.out.println(evaluationJson);
+			return null;
 			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
