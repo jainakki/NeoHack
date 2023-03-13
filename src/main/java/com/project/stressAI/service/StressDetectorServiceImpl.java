@@ -85,7 +85,7 @@ public class StressDetectorServiceImpl implements StressDetectorService {
 		        	double stressScore = output.getDouble(i, i) - output.getDouble(i, i+1);
 		        	System.out.println(stressScore);
 		            if(stressScore > 0.001) {
-		            	return "stressed";
+		            	return "Stressed";
 //		            	if(i==0)
 //		            		return "not stressed";
 //		            	if(i==1)
@@ -93,6 +93,8 @@ public class StressDetectorServiceImpl implements StressDetectorService {
 //		            	if(i==2)
 //		            		return "stressed";
 		            	
+		            } else {
+		            	return "Not Stressed";
 		            }
 		        }
 		        }
