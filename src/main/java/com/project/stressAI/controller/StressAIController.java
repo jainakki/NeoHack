@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-public class CustomController {
+public class StressAIController {
 
     @Autowired
     SentimentAnalyzer sentimentAnalyzer;
@@ -34,5 +36,11 @@ public class CustomController {
     @PostMapping(value = "/emailCheck")
     public String emailCheck(@RequestBody String mail) throws JsonProcessingException {
         return textRewriting.emailCheck(mail);
+    }
+
+    @PostMapping(value = "/recommendation")
+    public String recommendation(@RequestBody List<String> preference) throws JsonProcessingException {
+
+        return textRewriting.recommend(preference);
     }
 }
