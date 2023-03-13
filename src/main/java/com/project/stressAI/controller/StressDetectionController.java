@@ -1,5 +1,7 @@
 package com.project.stressAI.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ public class StressDetectionController {
 	private StressDetectorService service;
 	
 	@GetMapping(value = "/calculateStress")
-	public String getStressScore() {
+	public String getStressScore() throws IOException, InterruptedException {
 		return service.getStress();
 	}
 	
