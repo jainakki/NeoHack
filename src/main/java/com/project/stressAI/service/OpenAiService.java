@@ -22,7 +22,7 @@ public class OpenAiService
 
  private static final String OPENAI_URL = "https://api.openai.com/v1/completions";
 
- private final String apiKey = "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";
+ private final String apiKey = "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";
  private final RestTemplate restTemplate = new RestTemplate();
 
 // public String generateImages(String prompt, float temperature, int maxTokens, String stop, final int logprobs, final boolean echo)
